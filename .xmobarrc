@@ -1,0 +1,61 @@
+Config { font = "xft:JetBrainsMono Nerd Font:size=10:antialias=true:hinting=true"
+       , additionalFonts = ["xft:JetBrainsMono Nerd Font:size=10:antialias=true:hinting=true"]
+       , borderColor = "black"
+       , border = TopB
+       , bgColor = "#282828"
+       , fgColor = "#ebdbb2"
+       , alpha = 255
+       , position = Top
+       , textOffset = -1
+       , iconOffset = -1
+       , lowerOnStart = True
+       , pickBroadest = False
+       , persistent = False
+       , hideOnStart = False
+       , iconRoot = "."
+       , allDesktops = True
+       , overrideRedirect = True
+       , commands = [ Run Network "eth0" ["-L","0","-H","32",
+                                          "--normal","#cc00ff","--high","#33ff00"] 10
+                    , Run Network "eth1" ["-L","0","-H","32",
+                                          "--normal","green","--high","red"] 10
+                    , Run Cpu ["-t", "CPU: <total>%", "-L","3","-H","50",
+                               "--normal","green","--high","red"] 10
+                    , Run Memory ["-t","MEM: <usedratio>%"] 10
+                    , Run Com "uname" ["-s","-r"] "" 36000
+                    , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
+					          , Run DynNetwork
+                      [ "--template" , "↓<rx>kB/s ↑<tx>kB/s"
+                      , "--Low"      , "500"       -- units: B/s
+                      , "--High"     , "2000"       -- units: B/s
+                      , "--low"      , "#d65d0e"
+                      , "--normal"   , "#689d6a"
+                      , "--high"     , "#98971a"
+                      ] 100
+                    
+                    , Run Wireless "wlp1s0" [ "-t", "<essid>" ] 30
+                    , Run BatteryP ["BAT" , "BAT0" , "BAT1" , "BAT2"]
+                      [ "--template"         , "<acstatus> <left> <leftvbar>"
+                      , "-L"      , "15"       -- units: B/s
+                      , "-H"     , "85"       -- units: B/s
+                      , "--low"      , "#cc241d"
+                      , "--normal"   , "#fb4934"
+                      , "--high"     , "#b8bb26"
+                      ] 600
+                    
+
+                    , Run UnsafeStdinReader
+                    ]
+
+                    
+
+                
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = " <fn=1> <fc=#000000>%UnsafeStdinReader%</fc> </fn>  }%date%\
+                    \{ <fc=#fabd2f>%cpu%</fc> | <fc=#d3869b>%memory%</fc> | %wlp1s0wi% <fc=#d65d0e>%dynnetwork%</fc> | %battery%"
+       } 
+
+
+-- <fn=1>  <fc=#000000>%UnsafeStdinReader%</fc> </fn>
+-- <icon=/home/saurabh/.config/xmobar/icon/haskell.xpm/>
